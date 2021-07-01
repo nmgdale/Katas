@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using FluentAssertions;
 using Xunit;
 
 namespace Katas
@@ -16,7 +17,10 @@ namespace Katas
         [InlineData(10, "Buzz")]
         [InlineData(15, "FizzBuzz")]
         public void WhenSpeakingANumberCheckTheReply(int number, string reply)
-            => Assert.Equal(reply, new FizzBuzzGame().Speak(number));
+            => new FizzBuzzGame()
+                .Speak(number)
+                .Should()
+                .Be(reply);
     }
 
     public class FizzBuzzGame

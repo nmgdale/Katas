@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using FluentAssertions;
 using Xunit;
 
 namespace Katas
@@ -17,7 +18,7 @@ namespace Katas
         {
             _checkout.Scan(new Product(productSku));
 
-            Assert.Equal(new Money(amount), _checkout.Total());
+            _checkout.Total().Should().Be(new Money(amount));
         }
 
         [Fact]
@@ -26,7 +27,7 @@ namespace Katas
             _checkout.Scan(new Product("A"));
             _checkout.Scan(new Product("B"));
 
-            Assert.Equal(new Money(30), _checkout.Total());
+            _checkout.Total().Should().Be(new Money(30));
         }
 
         [Fact]
@@ -35,7 +36,7 @@ namespace Katas
             _checkout.Scan(new Product("A"));
             _checkout.Scan(new Product("A"));
 
-            Assert.Equal(new Money(15), _checkout.Total());
+            _checkout.Total().Should().Be(new Money(15));
         }
 
         [Fact]
@@ -45,7 +46,7 @@ namespace Katas
             _checkout.Scan(new Product("B"));
             _checkout.Scan(new Product("B"));
 
-            Assert.Equal(new Money(50), _checkout.Total());
+            _checkout.Total().Should().Be(new Money(50));
         }
 
         [Fact]
@@ -56,7 +57,7 @@ namespace Katas
             _checkout.Scan(new Product("A"));
             _checkout.Scan(new Product("A"));
 
-            Assert.Equal(new Money(30), _checkout.Total());
+            _checkout.Total().Should().Be(new Money(30));
         }
 
         [Fact]
@@ -66,7 +67,7 @@ namespace Katas
             _checkout.Scan(new Product("A"));
             _checkout.Scan(new Product("A"));
 
-            Assert.Equal(new Money(25), _checkout.Total());
+            _checkout.Total().Should().Be(new Money(25));
         }
     }
 

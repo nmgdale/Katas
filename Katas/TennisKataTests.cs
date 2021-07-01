@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FluentAssertions;
 using Xunit;
 
 namespace Katas
@@ -24,8 +25,11 @@ namespace Katas
         [InlineData("Adv One", "One Wins")]
         [InlineData("Adv Two", "Deuce")]
         [InlineData("Deuce", "Adv One")]
-        public void PlayerOneScores(string currentScore, string expectedScore)
-            => Assert.Equal(TennisGame.AtScore(expectedScore), TennisGame.AtScore(currentScore).PlayerOneScores());
+        public void PlayerOneScoreTests(string currentScore, string expectedScore)
+            => new TennisGame(currentScore)
+                .PlayerOneScores()
+                .Should()
+                .Be(TennisGame.AtScore(expectedScore));
 
         [Theory]
         [InlineData("0-0", "0-15")]
@@ -46,8 +50,11 @@ namespace Katas
         [InlineData("Adv One", "Deuce")]
         [InlineData("Adv Two", "Two Wins")]
         [InlineData("Deuce", "Adv Two")]
-        public void PlayerTwoScores(string currentScore, string expectedScore)
-            => Assert.Equal(TennisGame.AtScore(expectedScore), TennisGame.AtScore(currentScore).PlayerTwoScores());
+        public void PlayerTwoScoresTests(string currentScore, string expectedScore)
+            => new TennisGame(currentScore)
+                .PlayerTwoScores()
+                .Should()
+                .Be(TennisGame.AtScore(expectedScore));
     }
 
     public record TennisGame(string Score)
