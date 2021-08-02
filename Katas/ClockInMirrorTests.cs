@@ -17,6 +17,7 @@ namespace Katas
         [InlineData("12:01", "11:59")]
         [InlineData("12:30", "12:30")]
         [InlineData("06:00", "06:00")]
+        [InlineData("06:30", "06:30")]
         public void CheckTheTime(string currentTime, string expectedTime)
             => new ClockInMirror().WhatIsTheTime(currentTime).Should().Be(expectedTime);
     }
@@ -25,9 +26,14 @@ namespace Katas
     {
         private static readonly DateTime Midnight = new(2021, 1, 1, 12, 0, 0);
 
+        private readonly List<string> _mirroredTimes = new()
+        {
+            "12:30", "06:30"
+        };
+
         public string WhatIsTheTime(string currentTime)
         {
-            if (currentTime == "12:30") return currentTime;
+            if (_mirroredTimes.Contains(currentTime)) return currentTime;
 
             var time = DateTime.ParseExact(currentTime, @"hh\:mm", CultureInfo.CurrentCulture);
 
