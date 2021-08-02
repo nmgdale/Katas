@@ -16,6 +16,7 @@ namespace Katas
         [InlineData("11:58", "12:02")]
         [InlineData("12:01", "11:59")]
         [InlineData("12:30", "12:30")]
+        [InlineData("06:00", "06:00")]
         public void CheckTheTime(string currentTime, string expectedTime)
             => new ClockInMirror().WhatIsTheTime(currentTime).Should().Be(expectedTime);
     }
