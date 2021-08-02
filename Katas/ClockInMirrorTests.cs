@@ -9,6 +9,7 @@ namespace Katas
     public class ClockInMirrorTests
     {
         [Theory]
+        [InlineData("12:00", "12:00")]
         [InlineData("12:22", "11:38")]
         [InlineData("05:25", "06:35")]
         [InlineData("01:50", "10:10")]
