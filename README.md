@@ -8,3 +8,8 @@ Constraints:
 
 Constraints:
 * Fully Immutable - No state can change
+
+## FizzBuzz Kata
+
+Constraints:
+* No conditionals (if, switch, ?: etc)
