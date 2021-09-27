@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Bogus;
+﻿using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using Katas.LibraryKata.Models;
 using Katas.LibraryKata.Stubs;
@@ -15,7 +15,6 @@ namespace Katas.LibraryKata
 
     public class LibraryKataTests
     {
-        private readonly Faker _faker = new();
         private static LibraryRepositoryStub _libraryRepositoryStub;
 
         private static void Setup()
@@ -37,13 +36,31 @@ namespace Katas.LibraryKata
                 var book = _libraryRepositoryStub.RandomBook();
 
                 expectedBooks.Add(book);
-                
+
                 library.BookOut("0001", book.Id);
             }
 
             library.QueryUser("0001")
                 .Should()
                 .BeEquivalentTo(expectedBooks);
+        }
+
+        [Fact]
+        public void A_member_can_only_have_three_books_out_at_a_time()
+        {
+            Setup();
+
+            var library = new Library(_libraryRepositoryStub.Stub.Object);
+
+            library.BookOut("0001", _libraryRepositoryStub.RandomBook().Id);
+            library.BookOut("0001", _libraryRepositoryStub.RandomBook().Id);
+            library.BookOut("0001", _libraryRepositoryStub.RandomBook().Id);
+
+            Action act = () => library.BookOut("0001", _libraryRepositoryStub.RandomBook().Id);
+
+            act.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("A member can only have three books out at one time");
         }
     }
 }

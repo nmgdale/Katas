@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Katas.LibraryKata.Models
@@ -14,6 +15,9 @@ namespace Katas.LibraryKata.Models
 
         public void BookOut(string memberId, string bookId)
         {
+            if (QueryUser(memberId).Count() == 3)
+                throw new InvalidOperationException("A member can only have three books out at one time");
+
             _libraryRepository.BookOut(memberId, bookId);
         }
 
