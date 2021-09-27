@@ -14,11 +14,14 @@ namespace Katas.LibraryKata.Models
 
         public void BookOut(string memberId, string bookId)
         {
+            if (QueryBook(bookId).Book == null)
+                throw new InvalidOperationException("Invalid Book");
+
+            if (QueryBook(bookId).OwnedBy != null)
+                throw new InvalidOperationException("Book is already booked out");
+
             if (QueryUser(memberId).Count() == MaxNumberOfBooks)
                 throw new InvalidOperationException("A member can only have three books out at one time");
-
-            if (QueryBook(bookId) == null)
-                throw new InvalidOperationException("Invalid Book");
 
             _libraryRepository.BookOut(memberId, bookId);
         }
@@ -37,7 +40,10 @@ namespace Katas.LibraryKata.Models
                 .Select(bookId => _libraryRepository.GetBook(bookId));
         }
 
-        private Book QueryBook(string bookId)
-            => _libraryRepository.GetBook(bookId);
+        public string OwnedBy(string bookId)
+            => _libraryRepository.OwnedBy(bookId);
+
+        private (Book Book, string OwnedBy) QueryBook(string bookId)
+            => (_libraryRepository.GetBook(bookId), _libraryRepository.OwnedBy(bookId));
     }
 }

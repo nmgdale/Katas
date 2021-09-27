@@ -97,7 +97,7 @@ namespace Katas.LibraryKata
         }
 
         [Fact]
-        public void A_member_can_only_book_out_a_valid_book()
+        public void Only_valid_books_can_be_booked_out()
         {
             Setup();
 
@@ -109,6 +109,39 @@ namespace Katas.LibraryKata
             act.Should()
                 .Throw<InvalidOperationException>()
                 .WithMessage("Invalid book");
+        }
+
+        [Fact]
+        public void A_book_can_only_be_owned_once()
+        {
+            Setup();
+
+            var book = _libraryRepositoryStub.RandomBook().Id;
+            var library = new Library(_libraryRepositoryStub.Stub.Object);
+
+            library.BookOut(_libraryRepositoryStub.RandomMember(), book);
+            Action act = () => library.BookOut(_libraryRepositoryStub.RandomMember(), book);
+
+            act.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("Book is already booked out");
+        }
+
+        [Fact]
+        public void Check_who_a_book_is_owned_by()
+        {
+            Setup();
+
+            var member = _libraryRepositoryStub.RandomMember();
+            var library = new Library(_libraryRepositoryStub.Stub.Object);
+
+            var book = _libraryRepositoryStub.RandomBook();
+
+            library.OwnedBy(book.Id).Should().BeNull();
+
+            library.BookOut(member, book.Id);
+
+            library.OwnedBy(book.Id).Should().Be(member);
         }
     }
 }

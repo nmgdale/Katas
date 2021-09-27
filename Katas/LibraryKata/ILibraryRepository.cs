@@ -9,5 +9,6 @@ namespace Katas.LibraryKata
         void BookOut(string memberId, string bookId);
         void Return(string memberId, string bookId);
         Book GetBook(string bookId);
+        string OwnedBy(string bookId);
     }
 }

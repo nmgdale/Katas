@@ -14,13 +14,13 @@ namespace Katas.LibraryKata.Stubs
 
         private readonly Dictionary<string, Book> _books = Enumerable
             .Range(0, 100)
-            .Select(i => new Book(Faker.Random.Guid().ToString(), Faker.Commerce.ProductName()))
+            .Select(_ => new Book(Faker.Random.Guid().ToString(), Faker.Commerce.ProductName()))
             .ToDictionary(x => x.Id, x => x);
 
         private readonly Dictionary<string, List<string>> _memberBooks = Enumerable
             .Range(0, 100)
-            .Select(i => Faker.Random.Guid().ToString())
-            .ToDictionary(x => x, x => new List<string>());
+            .Select(_ => Faker.Random.Guid().ToString())
+            .ToDictionary(x => x, _ => new List<string>());
 
         public LibraryRepositoryStub Create()
         {
@@ -41,6 +41,17 @@ namespace Katas.LibraryKata.Stubs
             Stub
                 .Setup(x => x.Return(It.IsAny<string>(), It.IsAny<string>()))
                 .Callback<string, string>((memberId, bookId) => _memberBooks[memberId].Remove(bookId));
+
+            Stub
+                .Setup(x => x.OwnedBy(It.IsAny<string>()))
+                .Returns<string>(id =>
+                {
+                    return _memberBooks
+                        .SelectMany(x => x.Value)
+                        .Any(bookId => bookId == id)
+                            ? _memberBooks.First(m => m.Value.Contains(id)).Key
+                            : null;
+                });
 
             return this;
         }
