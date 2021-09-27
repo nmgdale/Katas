@@ -7,6 +7,7 @@ namespace Katas.LibraryKata
     {
         IEnumerable<string> GetMembersBooks(string memberId);
         void BookOut(string memberId, string bookId);
+        void Return(string memberId, string bookId);
         Book GetBook(string bookId);
     }
 }

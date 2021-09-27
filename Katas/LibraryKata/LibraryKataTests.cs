@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Katas.LibraryKata.Models;
 using Katas.LibraryKata.Stubs;
@@ -61,6 +62,22 @@ namespace Katas.LibraryKata
             act.Should()
                 .Throw<InvalidOperationException>()
                 .WithMessage("A member can only have three books out at one time");
+        }
+
+        [Fact]
+        public void A_member_can_return_books()
+        {
+            Setup();
+
+            var library = new Library(_libraryRepositoryStub.Stub.Object);
+
+            var book = _libraryRepositoryStub.RandomBook();
+
+            library.BookOut("0001", book.Id);
+            library.QueryUser("0001").Count().Should().Be(1);
+
+            library.Return("0001", book.Id);
+            library.QueryUser("0001").Count().Should().Be(0);
         }
     }
 }

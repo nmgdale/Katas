@@ -38,6 +38,10 @@ namespace Katas.LibraryKata.Stubs
                 .Setup(x => x.GetBook(It.IsAny<string>()))
                 .Returns<string>(bookId => _books[bookId]);
 
+            Stub
+                .Setup(x => x.Return(It.IsAny<string>(), It.IsAny<string>()))
+                .Callback<string, string>((memberId, bookId) => _memberBooks[memberId].Remove(bookId));
+
             return this;
         }
 

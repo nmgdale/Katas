@@ -21,6 +21,9 @@ namespace Katas.LibraryKata.Models
             _libraryRepository.BookOut(memberId, bookId);
         }
 
+        public void Return(string memberId, string bookId)
+            => _libraryRepository.Return(memberId, bookId);
+
         public IEnumerable<Book> QueryUser(string memberId)
         {
             return _libraryRepository.GetMembersBooks(memberId)
