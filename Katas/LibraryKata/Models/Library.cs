@@ -8,15 +8,17 @@ namespace Katas.LibraryKata.Models
     {
         private readonly ILibraryRepository _libraryRepository;
 
-        public Library(ILibraryRepository libraryRepository)
-        {
-            _libraryRepository = libraryRepository;
-        }
+        private const int MaxNumberOfBooks = 3;
+
+        public Library(ILibraryRepository libraryRepository) => _libraryRepository = libraryRepository;
 
         public void BookOut(string memberId, string bookId)
         {
-            if (QueryUser(memberId).Count() == 3)
+            if (QueryUser(memberId).Count() == MaxNumberOfBooks)
                 throw new InvalidOperationException("A member can only have three books out at one time");
+
+            if (QueryBook(bookId) == null)
+                throw new InvalidOperationException("Invalid Book");
 
             _libraryRepository.BookOut(memberId, bookId);
         }
@@ -26,8 +28,16 @@ namespace Katas.LibraryKata.Models
 
         public IEnumerable<Book> QueryUser(string memberId)
         {
-            return _libraryRepository.GetMembersBooks(memberId)
+            var membersBooks = _libraryRepository.GetMembersBooks(memberId);
+
+            if (membersBooks == null)
+                throw new InvalidOperationException("Invalid member");
+
+            return membersBooks
                 .Select(bookId => _libraryRepository.GetBook(bookId));
         }
+
+        private Book QueryBook(string bookId)
+            => _libraryRepository.GetBook(bookId);
     }
 }

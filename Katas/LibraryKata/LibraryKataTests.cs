@@ -82,5 +82,33 @@ namespace Katas.LibraryKata
             library.Return(member, book.Id);
             library.QueryUser(member).Count().Should().Be(0);
         }
+
+        [Fact]
+        public void A_non_member_cannot_book_out_a_book()
+        {
+            Setup();
+
+            var library = new Library(_libraryRepositoryStub.Stub.Object);
+
+            Action act = () => library.BookOut("FAKEID", _libraryRepositoryStub.RandomBook().Id);
+
+            act.Should()
+                .Throw<Exception>();
+        }
+
+        [Fact]
+        public void A_member_can_only_book_out_a_valid_book()
+        {
+            Setup();
+
+            var member = _libraryRepositoryStub.RandomMember();
+            var library = new Library(_libraryRepositoryStub.Stub.Object);
+
+            Action act = () => library.BookOut(member, "FAKEID");
+
+            act.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("Invalid book");
+        }
     }
 }
