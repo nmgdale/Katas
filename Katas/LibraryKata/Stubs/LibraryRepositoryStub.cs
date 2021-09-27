@@ -12,15 +12,15 @@ namespace Katas.LibraryKata.Stubs
 
         public Mock<ILibraryRepository> Stub;
 
-        private readonly Dictionary<string, List<string>> _memberBooks = new()
-        {
-            { "0001", new List<string>() }
-        };
-
         private readonly Dictionary<string, Book> _books = Enumerable
             .Range(0, 100)
             .Select(i => new Book(Faker.Random.Guid().ToString(), Faker.Commerce.ProductName()))
             .ToDictionary(x => x.Id, x => x);
+
+        private readonly Dictionary<string, List<string>> _memberBooks = Enumerable
+            .Range(0, 100)
+            .Select(i => Faker.Random.Guid().ToString())
+            .ToDictionary(x => x, x => new List<string>());
 
         public LibraryRepositoryStub Create()
         {
@@ -46,8 +46,9 @@ namespace Katas.LibraryKata.Stubs
         }
 
         public Book RandomBook()
-        {
-            return Faker.PickRandom(_books.Select(x => x.Value));
-        }
+            => Faker.PickRandom(_books.Select(x => x.Value));
+
+        public string RandomMember()
+            => Faker.PickRandom(_memberBooks.Select(x => x.Key));
     }
 }

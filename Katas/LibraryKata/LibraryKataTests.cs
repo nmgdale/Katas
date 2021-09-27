@@ -29,6 +29,7 @@ namespace Katas.LibraryKata
         {
             Setup();
 
+            var member = _libraryRepositoryStub.RandomMember();
             var expectedBooks = new List<Book>();
             var library = new Library(_libraryRepositoryStub.Stub.Object);
 
@@ -38,10 +39,10 @@ namespace Katas.LibraryKata
 
                 expectedBooks.Add(book);
 
-                library.BookOut("0001", book.Id);
+                library.BookOut(member, book.Id);
             }
 
-            library.QueryUser("0001")
+            library.QueryUser(member)
                 .Should()
                 .BeEquivalentTo(expectedBooks);
         }
@@ -51,13 +52,14 @@ namespace Katas.LibraryKata
         {
             Setup();
 
+            var member = _libraryRepositoryStub.RandomMember();
             var library = new Library(_libraryRepositoryStub.Stub.Object);
 
-            library.BookOut("0001", _libraryRepositoryStub.RandomBook().Id);
-            library.BookOut("0001", _libraryRepositoryStub.RandomBook().Id);
-            library.BookOut("0001", _libraryRepositoryStub.RandomBook().Id);
+            library.BookOut(member, _libraryRepositoryStub.RandomBook().Id);
+            library.BookOut(member, _libraryRepositoryStub.RandomBook().Id);
+            library.BookOut(member, _libraryRepositoryStub.RandomBook().Id);
 
-            Action act = () => library.BookOut("0001", _libraryRepositoryStub.RandomBook().Id);
+            Action act = () => library.BookOut(member, _libraryRepositoryStub.RandomBook().Id);
 
             act.Should()
                 .Throw<InvalidOperationException>()
@@ -69,15 +71,16 @@ namespace Katas.LibraryKata
         {
             Setup();
 
+            var member = _libraryRepositoryStub.RandomMember();
             var library = new Library(_libraryRepositoryStub.Stub.Object);
 
             var book = _libraryRepositoryStub.RandomBook();
 
-            library.BookOut("0001", book.Id);
-            library.QueryUser("0001").Count().Should().Be(1);
+            library.BookOut(member, book.Id);
+            library.QueryUser(member).Count().Should().Be(1);
 
-            library.Return("0001", book.Id);
-            library.QueryUser("0001").Count().Should().Be(0);
+            library.Return(member, book.Id);
+            library.QueryUser(member).Count().Should().Be(0);
         }
     }
 }
