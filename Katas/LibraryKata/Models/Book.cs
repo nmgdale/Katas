@@ -2,8 +2,8 @@
 {
     public class Book
     {
-        public readonly string Id;
-        public readonly string Name;
+        public string Id { get; set; }
+        public string Name { get; set; }
 
         public Book(string id, string name)
         {
