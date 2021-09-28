@@ -42,7 +42,7 @@ namespace Katas.LibraryKata
                 library.BookOut(member, book.Id);
             }
 
-            library.QueryUser(member)
+            library.QueryUsersBooks(member)
                 .Should()
                 .BeEquivalentTo(expectedBooks);
         }
@@ -77,10 +77,10 @@ namespace Katas.LibraryKata
             var book = _libraryRepositoryStub.RandomBook();
 
             library.BookOut(member, book.Id);
-            library.QueryUser(member).Count().Should().Be(1);
+            library.QueryUsersBooks(member).Count().Should().Be(1);
 
             library.Return(member, book.Id);
-            library.QueryUser(member).Count().Should().Be(0);
+            library.QueryUsersBooks(member).Count().Should().Be(0);
         }
 
         [Fact]
@@ -93,7 +93,8 @@ namespace Katas.LibraryKata
             Action act = () => library.BookOut("FAKEID", _libraryRepositoryStub.RandomBook().Id);
 
             act.Should()
-                .Throw<Exception>();
+                .Throw<InvalidOperationException>()
+                .WithMessage("Invalid member");
         }
 
         [Fact]

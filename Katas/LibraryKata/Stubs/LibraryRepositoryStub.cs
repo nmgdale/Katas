@@ -39,6 +39,10 @@ namespace Katas.LibraryKata.Stubs
                 .Returns<string>(bookId => _books.ContainsKey(bookId) ? _books[bookId] : null);
 
             Stub
+                .Setup(x => x.GetMember(It.IsAny<string>()))
+                .Returns<string>(memberId => _memberBooks.ContainsKey(memberId) ? new Member(memberId, Faker.Person.FirstName) : null);
+
+            Stub
                 .Setup(x => x.Return(It.IsAny<string>(), It.IsAny<string>()))
                 .Callback<string, string>((memberId, bookId) => _memberBooks[memberId].Remove(bookId));
 
