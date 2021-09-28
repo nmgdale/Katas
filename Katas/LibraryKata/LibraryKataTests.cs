@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Katas.LibraryKata.Models;
-using Katas.LibraryKata.Repositories;
 using Katas.LibraryKata.Stubs;
 using Xunit;
 
@@ -143,15 +142,6 @@ namespace Katas.LibraryKata
             library.BookOut(member, book.Id);
 
             library.OwnedBy(book.Id).Should().Be(member);
-        }
-    }
-
-    public class LibraryKataIntegrationTests
-    {
-        [Fact]
-        public void Test()
-        {
-            var book = new LibraryDatabase();
         }
     }
 }
