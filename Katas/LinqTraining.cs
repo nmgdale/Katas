@@ -10,10 +10,10 @@ namespace Katas
         private static readonly Faker Faker = new();
 
         private static readonly IEnumerable<Order> Orders = Enumerable.Range(0, Faker.Random.Number(100, 200))
-            .Select(i => new Order
+            .Select(_ => new Order
             {
                 Items = Enumerable.Range(0, Faker.Random.Number(1, 10))
-                    .Select(y => new Item
+                    .Select(_ => new Item
                     {
                         Type = Faker.PickRandom("Hardware", "Broadband", "Voice", "Domain"),
                         Price = new Money(Faker.Random.Number(0, 100))
@@ -23,6 +23,7 @@ namespace Katas
         [Fact]
         public void Test()
         {
+            ;
         }
     }
 
