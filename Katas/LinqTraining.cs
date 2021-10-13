@@ -20,14 +20,6 @@ namespace Katas
                     })
             });
 
-        //Select()
-        //SelectMany()
-        //Any() All()
-        //Aggregate()
-        //GroupBy()
-        //Skip() Take()
-        //First() Last() Single()
-
         [Fact]
         public void Test()
         {
